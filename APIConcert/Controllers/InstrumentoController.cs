@@ -42,6 +42,20 @@ namespace APIConcert.Controllers
             return instrumento;
         }
 
+        [HttpGet("GetNameInstrument/{id}")]
+        public async Task<ActionResult<string>> GetNameInstrument(int id)
+        {
+            var instrumento = await _context.Instrumento.FindAsync(id);
+
+            if (instrumento == null)
+            {
+                return NotFound();
+            }
+            string name = instrumento.NombreInstrumento;
+            return name;
+        }
+
+
         // PUT: api/Instrumento/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
