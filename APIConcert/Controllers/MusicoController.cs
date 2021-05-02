@@ -42,6 +42,26 @@ namespace APIConcert.Controllers
             return musico;
         }
 
+
+        [HttpGet("GetMusicosWithInstrumentName")]
+        public async Task<ActionResult<IEnumerable<object>>> GetMusicosWithInstrumentName()
+        {
+            //de esta forma , consigo crear un nuevo objeto que tenga el nombre del instrumento y no el id,
+            //para poder imprimirlo en el cliente
+            var listaNombresInstrumentos = await _context.Musico.Include(c => c.Instrumento).Select(c =>
+            new {
+                Id = c.Id,
+                NombreMusico = c.NombreMusico,
+                FechaIngreso = c.FechaIngreso,
+                SueldoMusico = c.SueldoMusico,
+                NombreInstrumento = c.Instrumento.NombreInstrumento
+            }
+            ).ToListAsync();
+
+            return listaNombresInstrumentos;
+        }
+
+
         // PUT: api/Musico/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
